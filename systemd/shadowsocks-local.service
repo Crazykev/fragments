@@ -1,0 +1,22 @@
+[Unit]
+Description=shadowsocks local go client
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/tmp
+Environment=SERVER_IP=${SERVER_IP:-}
+Environment=PASSWORD=${PASSWORD:-}
+Environment=PORT=${PORT:-}
+ExecStart=/usr/bin/shadowsocks-local \
+        -k $PASSWORD \
+        -s $SERVER_IP \
+        -p $PORT \
+        -m aes-256-cfb \
+        -b 127.0.0.1 \
+        -l 1080
+Restart=always
+SyslogIdentifier=Shadowsocks
+
+[Install]
+WantedBy=multi-user.target
